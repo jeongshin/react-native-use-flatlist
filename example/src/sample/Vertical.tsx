@@ -1,7 +1,10 @@
 import * as React from 'react';
 
 import { View, FlatList, SafeAreaView, Button, Image } from 'react-native';
-import { useVerticalFlatList } from 'react-native-use-flatlist';
+import {
+  useFlatListViewableItems,
+  useVerticalFlatList,
+} from 'react-native-use-flatlist';
 import { data } from './sample-data';
 
 export default function Vertical() {
@@ -16,6 +19,13 @@ export default function Vertical() {
       itemGap: 10,
       rowGap: 10,
     });
+
+  const { onViewableItemsChanged } = useFlatListViewableItems({
+    shouldViewable: 'once',
+    onItemViewable: (item) => {
+      console.log('visible', item);
+    },
+  });
 
   const [currentItem, setCurrentItem] = React.useState<string | null>(null);
 
@@ -68,6 +78,7 @@ export default function Vertical() {
       <FlatList
         ref={ref}
         data={data}
+        onViewableItemsChanged={onViewableItemsChanged}
         renderItem={({ item }) => (
           <View
             style={[

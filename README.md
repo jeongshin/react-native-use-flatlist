@@ -19,9 +19,7 @@ yarn add react-native-use-flatlist
 
 ### Vertical FlatList
 
-<video width="300" height="500" controls>
-  <source src="https://github.com/jeongshin/react-native-use-flatlist/assets/64301935/9da72605-a150-4848-bee3-3285e9c88543" type="video/mp4">
-</video>
+<img width="300" height="500" src="./samples/vertical.gif" />
 
 <img width="300" height="500" src="./samples/vertical.png" />
 
@@ -73,6 +71,34 @@ return (
     ListHeaderComponent={<MyHeader onLayout={onHeaderLayout} />}
   />
 );
+```
+
+### Viewable Item Tracking
+
+```tsx
+interface ViewableItemOptions<T> {
+  /**
+   * callback when item is viewable
+   */
+  onItemViewable?: (item: T, index: number) => void;
+
+  /**
+   * 'multiple' - `onItemViewable` will be called multiple times for each item
+   * 'once' - `onItemViewable` will be called only once for each item
+   *
+   * @default 'multiple'
+   */
+  shouldViewable?: 'multiple' | 'once';
+}
+
+const { onViewableItemsChanged } = useFlatListViewableItems({
+  shouldViewable: 'once',
+  onItemViewable: (item) => {
+    console.log('visible', item);
+  },
+});
+
+<FlatList data={data} onViewableItemsChanged={onViewableItemsChanged} />;
 ```
 
 ## Contributing

@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { Button, FlatList, Image, SafeAreaView, View } from 'react-native';
 import { data } from './sample-data';
-import { useHorizontalFlatList } from 'react-native-use-flatlist';
+import {
+  useFlatListViewableItems,
+  useHorizontalFlatList,
+} from 'react-native-use-flatlist';
 
 const Horizontal = () => {
   const ITEM_WIDTH = 100;
@@ -12,6 +15,13 @@ const Horizontal = () => {
       itemGap: 10,
       paddingHorizontal: 10,
     });
+
+  const { onViewableItemsChanged } = useFlatListViewableItems({
+    shouldViewable: 'once',
+    onItemViewable: (item) => {
+      console.log('visible', item);
+    },
+  });
 
   const [currentItem, setCurrentItem] = useState<string | null>(null);
 
@@ -77,6 +87,7 @@ const Horizontal = () => {
             onLayout={onHeaderLayout}
           />
         }
+        onViewableItemsChanged={onViewableItemsChanged}
         renderItem={({ item }) => {
           return (
             <View

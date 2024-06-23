@@ -1,21 +1,51 @@
 # react-native-use-flatlist
 
-make easier flatlist to use
+make <FlatList /> easier to use
 
 ## Installation
 
 ```sh
-npm install react-native-use-flatlist
+yarn add react-native-use-flatlist
 ```
 
 ## Usage
 
-```js
-import { multiply } from 'react-native-use-flatlist';
+### Vertical FlatList
 
-// ...
+```tsx
+import { useVerticalFlatList } from 'react-native-use-flatlist';
 
-const result = await multiply(3, 7);
+// item should have fixed size
+const ITEM_HEIGHT = 100;
+
+const { ref, itemWidth, props, scrollToIndex, onHeaderLayout } =
+  useVerticalFlatList<string>({
+    paddingVertical: 20,
+    columnPaddingHorizontal: 10,
+    itemHeight: ITEM_HEIGHT,
+    numColumns: 2,
+    itemGap: 10,
+    rowGap: 10,
+  });
+
+return <FlatList ref={ref} data={data} {...props} />;
+```
+
+### Horizontal FlatList
+
+```tsx
+import { useHorizontalFlatList } from 'react-native-use-flatlist';
+
+const ITEM_WIDTH = 100;
+
+const { ref, props, onHeaderLayout, scrollToIndex } =
+  useHorizontalFlatList<ItemType>({
+    itemWidth: ITEM_WIDTH,
+    itemGap: 10,
+    paddingHorizontal: 10,
+  });
+
+return <FlatList ref={ref} data={data} {...props} />;
 ```
 
 ## Contributing

@@ -1,23 +1,19 @@
-import * as React from 'react';
-
-import { View, FlatList, SafeAreaView, Button, Image } from 'react-native';
-import { useVerticalFlatList } from 'react-native-use-flatlist';
+import { useState } from 'react';
+import { Button, FlatList, Image, SafeAreaView, View } from 'react-native';
 import { data } from './sample-data';
+import { useHorizontalFlatList } from 'react-native-use-flatlist';
 
-export default function Vertical() {
-  const ITEM_HEIGHT = 100;
+const Horizontal = () => {
+  const ITEM_WIDTH = 100;
 
-  const { ref, itemWidth, props, scrollToIndex, onHeaderLayout } =
-    useVerticalFlatList<string>({
-      paddingVertical: 20,
-      columnPaddingHorizontal: 10,
-      itemHeight: ITEM_HEIGHT,
-      numColumns: 2,
+  const { ref, props, onHeaderLayout, scrollToIndex } =
+    useHorizontalFlatList<string>({
+      itemWidth: ITEM_WIDTH,
       itemGap: 10,
-      rowGap: 10,
+      paddingHorizontal: 10,
     });
 
-  const [currentItem, setCurrentItem] = React.useState<string | null>(null);
+  const [currentItem, setCurrentItem] = useState<string | null>(null);
 
   const scrollToRandomItem = () => {
     const randomIndex = Math.floor(Math.random() * data.length);
@@ -44,8 +40,6 @@ export default function Vertical() {
           justifyContent: 'space-between',
           flexDirection: 'row',
           alignItems: 'center',
-          borderWidth: 1,
-          borderColor: '#eeeeee',
         }}
       >
         <Button
@@ -68,31 +62,38 @@ export default function Vertical() {
       <FlatList
         ref={ref}
         data={data}
-        renderItem={({ item }) => (
-          <View
-            style={[
-              {
-                width: itemWidth,
-                height: ITEM_HEIGHT,
-                backgroundColor: item,
-                opacity: currentItem === item ? 1 : 0.3,
-                borderRadius: 20,
-              },
-            ]}
-          />
-        )}
         ListHeaderComponent={
           <Image
-            onLayout={onHeaderLayout}
             source={{
               uri: 'https://file.sportsseoul.com/news/cms/2024/04/09/news-p.v1.20240228.0ff452386c954b99ae4850cff3d40522_P1.jpg',
             }}
             resizeMode="cover"
-            style={{ width: '100%', height: 200, backgroundColor: 'pink' }}
+            style={{
+              width: 200,
+              height: 200,
+              backgroundColor: 'pink',
+              borderRadius: 20,
+            }}
+            onLayout={onHeaderLayout}
           />
         }
+        renderItem={({ item }) => {
+          return (
+            <View
+              style={{
+                width: ITEM_WIDTH,
+                height: ITEM_WIDTH,
+                backgroundColor: item,
+                opacity: currentItem === item ? 1 : 0.3,
+                borderRadius: 20,
+              }}
+            />
+          );
+        }}
         {...props}
       />
     </SafeAreaView>
   );
-}
+};
+
+export default Horizontal;

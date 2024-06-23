@@ -1,1 +1,2 @@
-export * from './use-vertical-flatlist/useVerticalFlatList';
+export * from './use-vertical-flatlist';
+export * from './use-horizontal-flatlist';

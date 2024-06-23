@@ -3,15 +3,16 @@ import {
   FlatList,
   useWindowDimensions,
   type FlatListProps,
-  type LayoutChangeEvent,
 } from 'react-native';
+import useFlatListHeaderInternal from '../use-flatlist-header-internal';
 
 export interface VerticalFlatListOption {
   itemHeight: number;
   numColumns?: number;
   itemGap?: number;
-  columnPaddingHorizontal?: number;
   rowGap?: number;
+  columnPaddingHorizontal?: number;
+  paddingVertical?: number;
 }
 
 export function useVerticalFlatList<T>({
@@ -20,9 +21,8 @@ export function useVerticalFlatList<T>({
   itemGap = 0,
   rowGap = 0,
   columnPaddingHorizontal = 0,
+  paddingVertical = 0,
 }: VerticalFlatListOption) {
-  const headerHeight = useRef(0);
-
   const ref = useRef<FlatList<T>>(null);
 
   // numColumns should not be changed on the fly
@@ -30,23 +30,24 @@ export function useVerticalFlatList<T>({
 
   const { width, height } = useWindowDimensions();
 
+  const { headerSize, onHeaderLayout } = useFlatListHeaderInternal('vertical');
+
   const itemWidth =
     (width - columnPaddingHorizontal * 2 - itemGap * (numColumns - 1)) /
     numColumns;
-
-  const onHeaderLayout = useCallback((e: LayoutChangeEvent) => {
-    headerHeight.current = e.nativeEvent.layout.height;
-  }, []);
 
   const getItemLayout = useCallback(
     (_data: ArrayLike<T> | null | undefined, index: number) => {
       return {
         length: itemHeight,
-        offset: (itemHeight + rowGap) * index + headerHeight.current,
+        offset:
+          (itemHeight + rowGap) * index +
+          paddingVertical +
+          (headerSize.current ? headerSize.current + rowGap : 0),
         index: index,
       };
     },
-    [itemHeight, rowGap]
+    [itemHeight, rowGap, paddingVertical, headerSize]
   );
 
   const estimateItemCountInViewport =
@@ -73,11 +74,12 @@ export function useVerticalFlatList<T>({
           }
         : undefined,
     contentContainerStyle: {
+      paddingVertical,
       rowGap,
     },
     getItemLayout,
     numColumns,
-    windowSize: 4,
+    windowSize: estimateItemCountInViewport * 3,
     initialNumToRender: estimateItemCountInViewport * 2,
   } satisfies Partial<FlatListProps<T>>;
 

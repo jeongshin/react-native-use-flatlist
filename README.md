@@ -12,8 +12,9 @@ yarn add react-native-use-flatlist
 
 ## Features
 
-- handles all the complex calculation for `getItemLayout`
-- accurate scroll to index with `scrollToIndex`
+- 👌 handles all the complex calculation for `getItemLayout`
+- ✅ accurate scroll to index with `scrollToIndex`
+- 👀 easy viewable item tracking API for view event logging
 
 ## Usage
 

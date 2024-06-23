@@ -2,7 +2,7 @@
 
 # react-native-use-flatlist
 
-make <FlatList /> easier to use
+make `<FlatList />` easier to use
 
 ## Installation
 
@@ -10,9 +10,20 @@ make <FlatList /> easier to use
 yarn add react-native-use-flatlist
 ```
 
+## Features
+
+- handles all the complex calculation for `getItemLayout`
+- accurate scroll to index with `scrollToIndex`
+
 ## Usage
 
 ### Vertical FlatList
+
+<video width="300" height="500" controls>
+  <source src="https://github.com/jeongshin/react-native-use-flatlist/assets/64301935/9da72605-a150-4848-bee3-3285e9c88543" type="video/mp4">
+</video>
+
+<img width="300" height="500" src="./samples/vertical.png" />
 
 ```tsx
 import { useVerticalFlatList } from 'react-native-use-flatlist';
@@ -30,7 +41,14 @@ const { ref, itemWidth, props, scrollToIndex, onHeaderLayout } =
     rowGap: 10,
   });
 
-return <FlatList ref={ref} data={data} {...props} />;
+return (
+  <FlatList
+    ref={ref}
+    data={data}
+    {...props}
+    ListHeaderComponent={<MyHeader onLayout={onHeaderLayout} />}
+  />
+);
 ```
 
 ### Horizontal FlatList
@@ -47,7 +65,14 @@ const { ref, props, onHeaderLayout, scrollToIndex } =
     paddingHorizontal: 10,
   });
 
-return <FlatList ref={ref} data={data} {...props} />;
+return (
+  <FlatList
+    ref={ref}
+    data={data}
+    {...props}
+    ListHeaderComponent={<MyHeader onLayout={onHeaderLayout} />}
+  />
+);
 ```
 
 ## Contributing

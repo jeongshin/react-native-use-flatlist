@@ -1,6 +1,6 @@
 {
   "name": "react-native-use-flatlist",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "make <FlatList /> easier to use",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",

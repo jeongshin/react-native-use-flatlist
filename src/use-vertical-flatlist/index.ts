@@ -13,6 +13,7 @@ export interface VerticalFlatListOption {
   rowGap?: number;
   columnPaddingHorizontal?: number;
   paddingVertical?: number;
+  headerHeight?: number;
 }
 
 export function useVerticalFlatList<T>({
@@ -22,15 +23,19 @@ export function useVerticalFlatList<T>({
   rowGap = 0,
   columnPaddingHorizontal = 0,
   paddingVertical = 0,
+  headerHeight,
 }: VerticalFlatListOption) {
   const ref = useRef<FlatList<T>>(null);
 
   // numColumns should not be changed on the fly
   const numColumns = useRef(initialNumColumns ?? 1).current;
 
-  const { width, height } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
-  const { headerSize, onHeaderLayout } = useFlatListHeaderInternal('vertical');
+  const { headerSize, onHeaderLayout } = useFlatListHeaderInternal(
+    'vertical',
+    headerHeight
+  );
 
   const itemWidth =
     (width - columnPaddingHorizontal * 2 - itemGap * (numColumns - 1)) /
@@ -50,8 +55,8 @@ export function useVerticalFlatList<T>({
     [itemHeight, rowGap, paddingVertical, headerSize]
   );
 
-  const estimateItemCountInViewport =
-    Math.round(height / itemHeight) * numColumns;
+  // const estimateItemCountInViewport =
+  //   Math.round(height / itemHeight) * numColumns;
 
   const scrollToIndex = useCallback(
     (options: Parameters<FlatList<T>['scrollToIndex']>[0]) => {
@@ -79,8 +84,8 @@ export function useVerticalFlatList<T>({
     },
     getItemLayout,
     numColumns,
-    windowSize: estimateItemCountInViewport * 3,
-    initialNumToRender: estimateItemCountInViewport * 2,
+    // windowSize: estimateItemCountInViewport * 3,
+    // initialNumToRender: estimateItemCountInViewport * 2,
   } satisfies Partial<FlatListProps<T>>;
 
   return {

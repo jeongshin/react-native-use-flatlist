@@ -1,8 +1,11 @@
 import { useCallback, useRef } from 'react';
 import type { LayoutChangeEvent } from 'react-native';
 
-function useFlatListHeaderInternal(direction: 'horizontal' | 'vertical') {
-  const headerSize = useRef(0);
+function useFlatListHeaderInternal(
+  direction: 'horizontal' | 'vertical',
+  givenHeaderHeight: number | undefined
+) {
+  const headerSize = useRef(givenHeaderHeight ?? 0);
 
   const onHeaderLayout = useCallback(
     (e: LayoutChangeEvent) => {

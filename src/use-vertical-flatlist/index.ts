@@ -48,7 +48,7 @@ export function useVerticalFlatList<T>({
     numColumns;
 
   const itemHeightInPx = isPercentValue(itemHeight)
-    ? (parseFloat(itemHeight) / 100) * width
+    ? (parseFloat(itemHeight) / 100) * itemWidth
     : itemHeight;
 
   const getItemLayout = useCallback(

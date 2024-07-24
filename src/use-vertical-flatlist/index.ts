@@ -5,9 +5,10 @@ import {
   type FlatListProps,
 } from 'react-native';
 import useFlatListHeaderInternal from '../use-flatlist-header-internal';
+import { isPercentValue } from '../utils';
 
 export interface VerticalFlatListOption {
-  itemHeight: number;
+  itemHeight: number | `${number}%`;
   numColumns?: number;
   itemGap?: number;
   rowGap?: number;
@@ -41,18 +42,22 @@ export function useVerticalFlatList<T>({
     (width - columnPaddingHorizontal * 2 - itemGap * (numColumns - 1)) /
     numColumns;
 
+  const itemHeightInPx = isPercentValue(itemHeight)
+    ? (parseFloat(itemHeight) / 100) * width
+    : itemHeight;
+
   const getItemLayout = useCallback(
     (_data: ArrayLike<T> | null | undefined, index: number) => {
       return {
-        length: itemHeight,
+        length: itemHeightInPx,
         offset:
-          (itemHeight + rowGap) * index +
+          (itemHeightInPx + rowGap) * index +
           paddingVertical +
           (headerSize.current ? headerSize.current + rowGap : 0),
         index: index,
       };
     },
-    [itemHeight, rowGap, paddingVertical, headerSize]
+    [itemHeightInPx, rowGap, paddingVertical, headerSize]
   );
 
   // const estimateItemCountInViewport =

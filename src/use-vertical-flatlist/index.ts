@@ -1,6 +1,7 @@
 import { useCallback, useRef } from 'react';
 import {
   FlatList,
+  StyleSheet,
   useWindowDimensions,
   type FlatListProps,
 } from 'react-native';
@@ -15,6 +16,8 @@ export interface VerticalFlatListOption {
   columnPaddingHorizontal?: number;
   paddingVertical?: number;
   headerHeight?: number;
+  columnWrapperStyle?: FlatListProps<unknown>['columnWrapperStyle'];
+  contentContainerStyle?: FlatListProps<unknown>['contentContainerStyle'];
 }
 
 export function useVerticalFlatList<T>({
@@ -25,6 +28,8 @@ export function useVerticalFlatList<T>({
   columnPaddingHorizontal = 0,
   paddingVertical = 0,
   headerHeight,
+  contentContainerStyle,
+  columnWrapperStyle,
 }: VerticalFlatListOption) {
   const ref = useRef<FlatList<T>>(null);
 
@@ -76,17 +81,22 @@ export function useVerticalFlatList<T>({
   );
 
   const props = {
-    columnWrapperStyle:
+    columnWrapperStyle: StyleSheet.flatten([
+      columnWrapperStyle,
       numColumns > 1
         ? {
             columnGap: itemGap,
             paddingHorizontal: columnPaddingHorizontal,
           }
         : undefined,
-    contentContainerStyle: {
-      paddingVertical,
-      rowGap,
-    },
+    ]),
+    contentContainerStyle: StyleSheet.flatten([
+      contentContainerStyle,
+      {
+        paddingVertical,
+        rowGap,
+      },
+    ]),
     getItemLayout,
     numColumns,
     // windowSize: estimateItemCountInViewport * 3,

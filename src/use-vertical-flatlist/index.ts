@@ -107,6 +107,7 @@ export function useVerticalFlatList<T>({
     ref,
     props,
     itemWidth,
+    itemHeight: itemHeightInPx,
     scrollToIndex,
     onHeaderLayout,
   };

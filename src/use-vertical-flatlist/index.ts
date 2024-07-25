@@ -56,13 +56,13 @@ export function useVerticalFlatList<T>({
       return {
         length: itemHeightInPx,
         offset:
-          (itemHeightInPx + rowGap) * index +
+          (itemHeightInPx + rowGap) * Math.floor(index / numColumns) +
           paddingVertical +
           (headerSize.current ? headerSize.current + rowGap : 0),
         index: index,
       };
     },
-    [itemHeightInPx, rowGap, paddingVertical, headerSize]
+    [itemHeightInPx, rowGap, paddingVertical, headerSize, numColumns]
   );
 
   // const estimateItemCountInViewport =
